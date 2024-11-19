@@ -26,20 +26,20 @@ struct ContentView: View {
                             .font(.system(size: 90))
                             .fontWeight(.heavy)
                     }
-                        .frame(width: 120, height: 120, alignment: .center)
-                        .cornerRadius(30)
-                        .onTapGesture {
-                            withAnimation(.default) {
-                                if moves [index] == "" {
-                                    moves[index] = xTurn ? "X" : "O"
-                                    xTurn.toggle()
-                                }
+                    .frame(width: 120, height: 120, alignment: .center)
+                    .cornerRadius(30)
+                    .onTapGesture {
+                        withAnimation(.default) {
+                            if moves [index] == "" {
+                                moves[index] = xTurn ? "X" : "O"
+                                xTurn.toggle()
                             }
                         }
-                        .rotation3DEffect(
-                            .degrees(moves[index] == "" ? 180 : 0) ,
-                            axis: (x: 0.0, y: 1.0, z: 0.0)
-                        )
+                    }
+                    .rotation3DEffect(
+                        .degrees(moves[index] == "" ? 180 : 0) ,
+                        axis: (x: 0.0, y: 1.0, z: 0.0)
+                    )
                 }
             })
             
@@ -52,8 +52,18 @@ struct ContentView: View {
         }
     }
     private func checkForWinner() {
-        if moves [0] != "" && moves [0] == moves[1] && moves[1] == moves [2] {
-            winMessage = "\(moves[0]) is the winner"
+        checkLine(a: 0, b: 1, c: 2) // top row
+        checkLine(a: 3, b: 4, c: 5) // middle row
+        checkLine(a: 6, b: 7, c: 8) // bottom row
+        checkLine(a: 0, b: 3, c: 6) // left row
+        checkLine(a: 1, b: 4, c: 7) // middle row
+        checkLine(a: 2, b: 5, c: 8) // right row
+        checkLine(a: 0, b: 4, c: 8)// left diagonal
+        checkLine(a: 2, b: 4, c: 6) // right diagonal
+    }
+    private func checkLine(a: Int, b: Int, c: Int) {
+        if moves [a] != "" && moves [a] == moves[b] && moves[b] == moves [c] {
+            winMessage = "\(moves[a]) is the winner"
             gameOver = true
         }
     }
@@ -62,4 +72,3 @@ struct ContentView: View {
 #Preview {
     ContentView()
 }
-
